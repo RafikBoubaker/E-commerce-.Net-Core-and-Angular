@@ -14,12 +14,20 @@ namespace API.Controllers
     public class ProductsController: ControllerBase
     {
         //private readonly StoreContext _context;
-        private readonly IProductRepository _repo;
+        //private readonly IProductRepository _repo;
+        private readonly IGenericRepository<Product> _productsRepo;
+        private readonly IGenericRepository<ProductBrand> _productsBrandRepo;
+        private readonly IGenericRepository<ProductType> _productTypeRepo;
 
-      public ProductsController(IProductRepository repo)
+      public ProductsController(IGenericRepository<Product> productsRepo,
+      IGenericRepository<ProductBrand> productBrandRepo,IGenericRepository<ProductType> productTypeRepo)
       {
           // _context=context;
-          _repo = repo;
+         // _repo = repo;
+
+         _productsRepo = productsRepo;
+         _productsBrandRepo = productsBrandRepo;
+         _productTypeRepo = productTypeRepo;
       }
 
 
@@ -27,7 +35,7 @@ namespace API.Controllers
 
         public async Task<ActionResult<List<Product>>>  GetProducts()
         {
-            var products =await _repo.GetProductsAsync();
+            var products =await _productsRepo.ListAllAsync();
 
             return Ok(products);
         }
@@ -37,7 +45,7 @@ namespace API.Controllers
 
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-           return await _repo.GetProductByIdAsync(id);
+           return await _productsRepo.GetByIdAsync(id);
         }
 
 
@@ -45,7 +53,7 @@ namespace API.Controllers
 
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
-           return Ok(await _repo.GetProductBrandsAsync()); 
+           return Ok(await _productsBrandRepo.ListAllAsync()); 
         }
 
 
@@ -54,7 +62,7 @@ namespace API.Controllers
 
         public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
         {
-           return Ok(await _repo.GetProductTypesAsync()); 
+           return Ok(await _productTypeRepo.ListAllAsync()); 
         }
         
     }
