@@ -16,7 +16,7 @@ namespace API.Controllers
         //private readonly StoreContext _context;
         //private readonly IProductRepository _repo;
         private readonly IGenericRepository<Product> _productsRepo;
-        private readonly IGenericRepository<ProductBrand> _productsBrandRepo;
+        private readonly IGenericRepository<ProductBrand> _productBrandRepo;
         private readonly IGenericRepository<ProductType> _productTypeRepo;
 
       public ProductsController(IGenericRepository<Product> productsRepo,
@@ -26,7 +26,7 @@ namespace API.Controllers
          // _repo = repo;
 
          _productsRepo = productsRepo;
-         _productsBrandRepo = productsBrandRepo;
+         _productBrandRepo = productBrandRepo;
          _productTypeRepo = productTypeRepo;
       }
 
@@ -53,7 +53,7 @@ namespace API.Controllers
 
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
-           return Ok(await _productsBrandRepo.ListAllAsync()); 
+           return Ok(await _productBrandRepo.ListAllAsync()); 
         }
 
 

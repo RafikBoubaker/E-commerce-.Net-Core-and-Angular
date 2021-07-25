@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System;
+
 namespace Core.Specifications
 {
     public class BaseSpecification<T> : ISpecification<T>
@@ -16,7 +20,7 @@ namespace Core.Specifications
 
         protected void AddInclude(Expression<Func<T,object>> includeExpression)
         {
-            Includes.Add(includeExpression)
+            Includes.Add(includeExpression);
         }
     }
 }

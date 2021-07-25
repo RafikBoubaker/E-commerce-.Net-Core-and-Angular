@@ -1,10 +1,15 @@
 using Core.Entities;
 using Core.Interfaces;
 using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Core.Specifications;
+
 
 namespace Infrastructure.Data
 {
-    public class GenericRepository<T> : IGenericRepository<T>
+    public class GenericRepository<T> : IGenericRepository<T> where T: BaseEntity
     {
 
         private readonly StoreContext _context;
