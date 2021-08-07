@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Core.Specification
 {
-    public class BaseSpecipication<T> : ISpecification<T>
+    public class BaseSpecification<T> : ISpecification<T>
     {
-        public BaseSpecipication()
+        public BaseSpecification()
         {
             
         }
-        public BaseSpecipication(Expression<Func<T, bool>> criteria)
+        public BaseSpecification(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
         }

@@ -5,7 +5,7 @@ using Core.Entities;
 
 namespace Core.Specification
 {
-    public class ProductWithFilterForCountSpecification : BaseSpecipication<Product>
+    public class ProductWithFilterForCountSpecification : BaseSpecification<Product>
     {
         public ProductWithFilterForCountSpecification(ProductSpecParams productParams) 
             : base(x => 

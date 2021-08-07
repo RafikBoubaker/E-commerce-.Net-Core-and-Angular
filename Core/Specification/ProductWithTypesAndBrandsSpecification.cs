@@ -5,7 +5,7 @@ using Core.Entities;
 
 namespace Core.Specification
 {
-    public class ProductWithTypesAndBrandsSpecification : BaseSpecipication<Product>
+    public class ProductWithTypesAndBrandsSpecification : BaseSpecification<Product>
     {
         public ProductWithTypesAndBrandsSpecification(ProductSpecParams productParams) : base(x=>
             (String.IsNullOrEmpty(productParams.Search) || x.Name.ToLower().Contains(productParams.Search)) &&
