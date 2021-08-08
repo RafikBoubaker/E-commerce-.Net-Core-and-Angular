@@ -9055,11 +9055,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\HP\\Desktop\\Angular ASP.net\\API\\API.csproj",
+      "projectUniqueName": "C:\\Users\\HP\\Desktop\\Angular projects\\Angular ASP.net\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "c:\\Users\\HP\\Desktop\\Angular ASP.net\\API\\API.csproj",
+      "projectPath": "C:\\Users\\HP\\Desktop\\Angular projects\\Angular ASP.net\\API\\API.csproj",
       "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\HP\\Desktop\\Angular ASP.net\\API\\obj\\",
+      "outputPath": "C:\\Users\\HP\\Desktop\\Angular projects\\Angular ASP.net\\API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -9076,8 +9076,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "c:\\Users\\HP\\Desktop\\Angular ASP.net\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "c:\\Users\\HP\\Desktop\\Angular ASP.net\\Infrastructure\\Infrastructure.csproj"
+            "C:\\Users\\HP\\Desktop\\Angular projects\\Angular ASP.net\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\HP\\Desktop\\Angular projects\\Angular ASP.net\\Infrastructure\\Infrastructure.csproj"
             }
           }
         }
