@@ -16,29 +16,23 @@ namespace Infrastructure.Services
 
         public async Task CacheResponseAsync(string cacheKey, object response, TimeSpan timeToLive)
         {
-            if(response == null) 
-            {
-                return;
-            }
+            if (response == null) return;
 
             var options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
-            var serializedResponse = JsonSerializer.Serialize(response, options);
+            var serialisedResponse = JsonSerializer.Serialize(response, options);
 
-            await _database.StringSetAsync(cacheKey, serializedResponse, timeToLive);
+            await _database.StringSetAsync(cacheKey, serialisedResponse, timeToLive);
         }
 
-        public async Task<string> GetCacheResponseAsync(string cacheKey)
+        public async Task<string> GetCachedResponse(string cacheKey)
         {
             var cachedResponse = await _database.StringGetAsync(cacheKey);
 
-            if(cachedResponse.IsNullOrEmpty)
-            {
-                return null;
-            }
+            if (cachedResponse.IsNullOrEmpty) return null;
 
             return cachedResponse;
         }
