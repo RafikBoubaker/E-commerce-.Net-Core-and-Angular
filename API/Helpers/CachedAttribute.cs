@@ -23,13 +23,13 @@ namespace API.Helpers
             var cacheService = context.HttpContext.RequestServices.GetRequiredService<IResponseCacheService>();
 
             var cacheKey = GenerateCacheKeyFromRequest(context.HttpContext.Request);
-            var cachedResponse = await cacheService.GetCachedResponse(cacheKey);
+            var cacheResponse = await cacheService.GetCacheResponseAsync(cacheKey);
 
-            if (!string.IsNullOrEmpty(cachedResponse))
+            if (!string.IsNullOrEmpty(cacheResponse))
             {
                 var contentResult = new ContentResult
                 {
-                    Content = cachedResponse,
+                    Content = cacheResponse,
                     ContentType = "application/json",
                     StatusCode = 200
                 };
@@ -39,9 +39,9 @@ namespace API.Helpers
                 return;
             }
 
-            var executedContext = await next(); // move to controller
-
-            if (executedContext.Result is OkObjectResult okObjectResult)
+            //If it not found in cache then execute this..
+            var executedContext = await next();  //move to controller
+            if(executedContext.Result is OkObjectResult okObjectResult)
             {
                 await cacheService.CacheResponseAsync(cacheKey, okObjectResult.Value, TimeSpan.FromSeconds(_timeToLiveSeconds));
             }
@@ -53,7 +53,7 @@ namespace API.Helpers
 
             keyBuilder.Append($"{request.Path}");
 
-            foreach (var (key, value) in request.Query.OrderBy(x => x.Key))
+            foreach (var (key, value) in request.Query.OrderBy(o=>o.Key))
             {
                 keyBuilder.Append($"|{key}-{value}");
             }

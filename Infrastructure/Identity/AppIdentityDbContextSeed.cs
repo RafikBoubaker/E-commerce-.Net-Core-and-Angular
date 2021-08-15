@@ -7,26 +7,21 @@ namespace Infrastructure.Identity
 {
     public class AppIdentityDbContextSeed
     {
-        public static async Task SeedUsersAsync(UserManager<AppUser> userManager)
-        {
-            if (!userManager.Users.Any())
-            {
-                var user = new AppUser
-                {
-                    DisplayName = "Bob",
-                    Email = "bob@test.com",
-                    UserName = "bob@test.com",
-                    Address = new Address
-                    {
-                        FirstName = "Bob",
-                        LastName = "Bobbity",
-                        Street = "10 The street",
+        public static async Task SeedUserAsync(UserManager<AppUser> userManager){
+            if(!userManager.Users.Any()){
+                var user = new AppUser{
+                    DisplayName = "Robin",
+                    Email = "robin@test.com",
+                    UserName = "robin@test.com",
+                    Address = new Address{
+                        FirstName = "Robin",
+                        LastName = "Haider",
+                        Street = "10 The Street",
                         City = "New York",
                         State = "NY",
-                        ZipCode = "90210"
+                        Zipcode = "902120"
                     }
                 };
-
                 await userManager.CreateAsync(user, "Pa$$w0rd");
             }
         }
