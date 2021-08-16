@@ -5,11 +5,12 @@
   src='../../assets/images/logo.png'
     alt="SkiNet"
     style="max-height: 70px;"
+    routerLink ='/'
   />
   <nav class="my-2 my-md-0 mr-md-3 text-uppercase" style="font-size: larger;">
-    <a class="p-2" >Home</a
+    <a class="p-2" [routerLink]="['/']" routerLinkActive="router-link-active"  >Home</a
     >
-    <a class="p-2">Shop</a>
+    <a class="p-2" routerLink ='/shop'>Shop</a>
 
   </nav>
   <div class="d-flex align-items-center">

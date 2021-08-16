@@ -7,6 +7,7 @@ import { IProduct } from '../shared/models/product';
 import { IPagination, Pagination } from '../shared/models/pagination';
 
 import { ShopParams } from '../shared/models/shopParams';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,10 @@ pagination = new Pagination();
       params = params.append('typeId',shopParams.typeId.toString())
     }
    
+    if (shopParams.search) {
+      params = params.append('search',shopParams.search);
+    }
+
       params = params.append('sort',shopParams.sort)
       params = params.append('pageIndex',shopParams.pageNumber.toString())
       params = params.append('pageIndex',shopParams.pageSize.toString())
@@ -47,6 +52,19 @@ pagination = new Pagination();
       })
     );
   }
+
+  getProduct(id: number) {
+    const product = this.products.find(p => p.id === id);
+
+    if (product) {
+      return of(product);
+    }
+
+    return this.http.get<IProduct>(this.baseUrl + 'products/' + id);
+  }
+
+
+
 
 
   getBrands() {
