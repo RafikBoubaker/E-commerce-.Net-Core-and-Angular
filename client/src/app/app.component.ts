@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { BasketService } from './basket/basket.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'Cart';
 products : any[];
-  constructor(private http : HttpClient){
+  constructor(private http : HttpClient,private basketService: BasketService){
 
   }
 
@@ -20,5 +21,22 @@ products : any[];
     console.log(error)
   })
 
+
+  this.loadBasket();
   }
+
+
+    loadBasket() {
+      const basketId = localStorage.getItem('basket_id');
+      if (basketId) {
+        this.basketService.getBasket(basketId).subscribe(() => {
+          console.log('initialised basket');
+        }, error => {
+          console.log(error);
+        });
+      }
+
+    }
+
+
 }
