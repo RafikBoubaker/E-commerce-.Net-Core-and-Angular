@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { AccountService } from './account/account.service';
 import { BasketService } from './basket/basket.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { BasketService } from './basket/basket.service';
 export class AppComponent {
   title = 'Cart';
 products : any[];
-  constructor(private http : HttpClient,private basketService: BasketService){
+  constructor(private http : HttpClient,private basketService: BasketService, private accountService: AccountService){
 
   }
 
@@ -22,7 +23,9 @@ products : any[];
   })
 
 
-  this.loadBasket();
+    this.loadBasket();
+    this.loadCurrentUser();
+
   }
 
 
@@ -37,6 +40,16 @@ products : any[];
       }
 
     }
+  
+  
+  loadCurrentUser() {
+    const token = localStorage.getItem('token');
+    this.accountService.loadCurrentUser(token).subscribe(() => {
+      console.log('loaded user');
+    }, error => {
+      console.log(error);
+    });
+  }
 
 
 }
