@@ -28,7 +28,8 @@ loginForm : FormGroup;
 
   onSubmit() {
      this.accountService.login(this.loginForm.value).subscribe(() => {
-      console.log('user logged in');
+       console.log('user logged in');
+       this.router.navigateByUrl('/shop')
     }, error => {
       console.log(error);
     });
