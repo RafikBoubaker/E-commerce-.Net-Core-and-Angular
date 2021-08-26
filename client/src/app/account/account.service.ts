@@ -20,7 +20,9 @@ currentUser$ = this.currentUserSource.asObservable();
 
   getCurrentUserValue() {
   return this.currentUserSource.value
-}
+  }
+  
+  
 
   loadCurrentUser(token: string) {
     let headers = new HttpHeaders()

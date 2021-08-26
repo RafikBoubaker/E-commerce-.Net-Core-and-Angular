@@ -9,10 +9,13 @@ import { AccountService } from '../account.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-loginForm : FormGroup;
+  loginForm: FormGroup;
+  returnUrl: string
   constructor(private accountService: AccountService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+this.returnUrl=this.activatedRoute.snapshot.queryParams.returnUrl || '/shop'
+    this.createLoginForm()
   }
 
 
@@ -29,7 +32,7 @@ loginForm : FormGroup;
   onSubmit() {
      this.accountService.login(this.loginForm.value).subscribe(() => {
        console.log('user logged in');
-       this.router.navigateByUrl('/shop')
+       this.router.navigateByUrl(this.returnUrl)
     }, error => {
       console.log(error);
     });
