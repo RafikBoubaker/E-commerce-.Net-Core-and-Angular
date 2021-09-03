@@ -16,9 +16,8 @@ namespace API.Controllers
     {
         private readonly IPaymentService _paymentService;
         private readonly string _whSecret;
-        private readonly ILogger<PaymentsController> _logger;
-        public PaymentsController(IPaymentService paymentService, ILogger<PaymentsController> logger, 
-            IConfiguration config)
+        private readonly ILogger<IPaymentService> _logger;
+        public PaymentsController(IPaymentService paymentService, ILogger<IPaymentService> logger, IConfiguration config)
         {
             _logger = logger;
             _paymentService = paymentService;
@@ -50,19 +49,20 @@ namespace API.Controllers
             {
                 case "payment_intent.succeeded":
                     intent = (PaymentIntent)stripeEvent.Data.Object;
-                    _logger.LogInformation("Payment Succeeded");
-                    order = await _paymentService.UpdateOrderPaymentSucceeded(intent.Id);
+                    _logger.LogInformation("Payment Succeeded: ", intent.Id);
+                    order  = await _paymentService.UpdateOrderPaymentSucceeded(intent.Id);
                     _logger.LogInformation("Order updated to payment received: ", order.Id);
                     break;
                 case "payment_intent.payment_failed":
                     intent = (PaymentIntent)stripeEvent.Data.Object;
-                    _logger.LogInformation("Payment failed: ", intent.Id);
+                    _logger.LogInformation("Payment Failed: ", intent.Id);
                     order = await _paymentService.UpdateOrderPaymentFailed(intent.Id);
-                    _logger.LogInformation("Payment failed: ", order.Id);
+                    _logger.LogInformation("Payment Failed: ", order.Id);
                     break;
             }
 
             return new EmptyResult();
         }
+
     }
 }

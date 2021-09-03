@@ -5,7 +5,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
   providedIn: 'root'
 })
 export class BusyService {
-busyRequestCount = 0;
+  busyRequestCount = 0;
+
   constructor(private spinnerService: NgxSpinnerService) { }
 
   busy() {
@@ -24,6 +25,4 @@ busyRequestCount = 0;
       this.spinnerService.hide();
     }
   }
-
-  
 }

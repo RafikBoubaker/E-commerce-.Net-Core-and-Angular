@@ -16,4 +16,3 @@ export class PagingHeaderComponent implements OnInit {
   }
 
 }
-

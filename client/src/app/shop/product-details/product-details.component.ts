@@ -17,20 +17,17 @@ export class ProductDetailsComponent implements OnInit {
   constructor(private shopService: ShopService,
               private activateRoute: ActivatedRoute,
               private bcService: BreadcrumbService,
-              private basketService: BasketService
-            ) {
-              this.bcService.set('@productDetails', '');
+              private basketService: BasketService) {
+    this.bcService.set('@productDetails', '');
   }
 
   ngOnInit() {
     this.loadProduct();
   }
 
-  
   addItemToBasket() {
     this.basketService.addItemToBasket(this.product, this.quantity);
   }
-
 
   incrementQuantity() {
     this.quantity++;
@@ -45,7 +42,6 @@ export class ProductDetailsComponent implements OnInit {
   loadProduct() {
     this.shopService.getProduct(+this.activateRoute.snapshot.paramMap.get('id')).subscribe(product => {
       this.product = product;
-     
       this.bcService.set('@productDetails', product.name);
     }, error => {
       console.log(error);

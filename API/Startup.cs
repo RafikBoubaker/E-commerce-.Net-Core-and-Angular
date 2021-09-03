@@ -2,6 +2,7 @@ using System.IO;
 using API.Extensions;
 using API.Helpers;
 using API.Middleware;
+using AutoMapper;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
@@ -22,29 +23,50 @@ namespace API
             _config = config;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(MappingProfiles));
-            services.AddControllers();
             services.AddDbContext<StoreContext>(x =>
-                x.UseNpgsql(_config.GetConnectionString("DefaultConnection")));
+                x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
+
             services.AddDbContext<AppIdentityDbContext>(x => 
             {
-                x.UseNpgsql(_config.GetConnectionString("IdentityConnection"));
+                x.UseSqlite(_config.GetConnectionString("IdentityConnection"));
             });
 
-            services.AddSingleton<IConnectionMultiplexer>(c =>
+            ConfigureServices(services);
+        }
+
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            services.AddDbContext<StoreContext>(x =>
+                x.UseMySql(_config.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<AppIdentityDbContext>(x => 
             {
-                var configuration = ConfigurationOptions.Parse(_config.GetConnectionString("Redis"), true);
+                x.UseMySql(_config.GetConnectionString("IdentityConnection"));
+            });
+
+            ConfigureServices(services);
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            
+            services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddControllers();
+
+            services.AddSingleton<IConnectionMultiplexer>(c => {
+                var configuration = ConfigurationOptions.Parse(_config
+                    .GetConnectionString("Redis"), true);
                 return ConnectionMultiplexer.Connect(configuration);
             });
+
             services.AddApplicationServices();
             services.AddIdentityServices(_config);
             services.AddSwaggerDocumentation();
-            services.AddCors(opt =>
+            services.AddCors(opt => 
             {
-                opt.AddPolicy("CorsPolicy", policy =>
+                opt.AddPolicy("CorsPolicy", policy => 
                 {
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
                 });
@@ -55,9 +77,6 @@ namespace API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMiddleware<ExceptionMiddleware>();
-
-            app.UseSwaggerDocumentation();
-
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
             app.UseHttpsRedirection();
@@ -75,6 +94,8 @@ namespace API
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSwaggerDocumention();
 
             app.UseEndpoints(endpoints =>
             {

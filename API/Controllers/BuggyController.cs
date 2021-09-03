@@ -25,7 +25,10 @@ namespace API.Controllers
         {
             var thing = _context.Products.Find(42);
 
-            if (thing == null) return NotFound(new ApiResponse(404));
+            if (thing == null) 
+            {
+                return NotFound(new ApiResponse(404));
+            }
 
             return Ok();
         }

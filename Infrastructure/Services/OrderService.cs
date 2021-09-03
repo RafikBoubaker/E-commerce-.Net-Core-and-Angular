@@ -20,9 +20,9 @@ namespace Infrastructure.Services
             _basketRepo = basketRepo;
         }
 
-        public async Task<Order> CreateOrderAsync(string buyerEmail, int delieveryMethodId, string basketId, Address shippingAddress)
+        public async Task<Order> CreateOrderAsync(string buyerEmail, int deliveryMethodId, string basketId, Address shippingAddress)
         {
-            // get basket from repo
+            // get basket from the repo
             var basket = await _basketRepo.GetBasketAsync(basketId);
 
             // get items from the product repo
@@ -36,18 +36,14 @@ namespace Infrastructure.Services
             }
 
             // get delivery method from repo
-            var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetByIdAsync(delieveryMethodId);
+            var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetByIdAsync(deliveryMethodId);
 
             // calc subtotal
             var subtotal = items.Sum(item => item.Price * item.Quantity);
 
             // check to see if order exists
-            var spec = new OrderByPaymentIntentWithItemsSpecification(basket.PaymentIntentId);
+            var spec = new OrderByPaymentIntentIdSpecification(basket.PaymentIntentId);
             var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
-
-            // create order
-            var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal, basket.PaymentIntentId);
-            _unitOfWork.Repository<Order>().Add(order);
 
             if (existingOrder != null)
             {
@@ -55,7 +51,11 @@ namespace Infrastructure.Services
                 await _paymentService.CreateOrUpdatePaymentIntent(basket.PaymentIntentId);
             }
 
-            // TODO: save to db
+            // create order
+            var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal, basket.PaymentIntentId);
+            _unitOfWork.Repository<Order>().Add(order);
+
+            // save to db
             var result = await _unitOfWork.Complete();
 
             if (result <= 0) return null;
